@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block head %}
+{{ parent() }}
+    {% block stylesheets %}
+        {{ parent() }}
+        <link href="{{ asset('/css/profil.css') }}" rel="stylesheet" />
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+
+    {% if app.user %}
+        <div>
+            <div class="block user-info">
+                <img src="{{ asset('/img/avatar/' ~ app.user.avatar.src ~ '.svg') }}" alt="{{ app.user.userIdentifier }}" class="img-thumbnail">
+                <h2>{{ app.user.pseudo }}</h2>
+                <p>📧 {{ app.user.email }}</p>
+                <p class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" >{{ app.user.ville.nom }}, {{ app.user.region.nom }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

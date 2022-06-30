@@ -1,0 +1,11 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+home:
+    path: /
+    controller: \App\Controller\HomeController::index
+
+profil:
+    path: /profil
+    controller: \App\Controller\UserController::index

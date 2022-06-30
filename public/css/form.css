@@ -1,0 +1,60 @@
+
+
+form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+form > div > label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+form > div > input, select {
+    box-sizing: content-box;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+
+.align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    transition: transform 0.2s;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    filter: grayscale(0.9);
+}
+
+.avatar:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: transform 0.2s;
+}
+
+#avatar-form {
+    display: none;
+}
+
+.avatar-selected {
+    filter: grayscale(0);
+}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block head %}
+{{ parent() }}
+    {% block stylesheets %}
+        {{ parent() }}
+        <link href="{{ asset('/css/profil.css') }}" rel="stylesheet" />
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div style="max-width: 1200px">
+        <h1>Liste des annonces</h1>
+        <div class="align">
+        {% for item in annonces %}
+                <div class="annonce-item">
+                    {% for image in item.images_ %}
+                    <div class="annonce-images">
+                            {% for key, value in image %}
+                                {% if key == "image1" %}
+                                    <div class="image-principale" style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                                {% endif %}
+                            {% endfor %}
+                        <div class="images-secondaires">
+                            {% for key, value in image %}
+                                {% if key != "image1" %}
+                                    <div style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <h2>{{ item.titre }}</h2>
+                <div class="tags">
+                {% for tag in item.tag1 %}
+                    <a class="tag">{{ tag.nom }}</a>
+                {% endfor %}
+                </div>
+                <a class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" >{{ item.ville.nom }}, {{ item.ville.region.nom }}</a>
+                <a class="text-icone"><img class="icone" src="{{ asset('img/icones/user.png') }}" >Vendeur : {{ item.vendeur.pseudo }}</a>
+                <p class="description">{{ item.description }}</p>
+                <a class="btn">Voir l'annonce</a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

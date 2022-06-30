@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block head %}
+{{ parent() }}
+{% block stylesheets %}
+            <link href="{{ asset('/css/form.css') }}" rel="stylesheet" />
+        {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+    {{ form_start(registrationForm) }}
+    <h1>Register</h1>
+        {{ form_row(registrationForm.pseudo) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.region, {'id':'region-form'}) }}
+        {{ form_row(registrationForm.ville, {'id':'ville-form'}) }}
+        {{ form_row(registrationForm.avatar, {'id':'avatar-form'}) }}
+        <div class="align">
+        {% for item in avatars %}
+            <img src="{{ asset('/img/avatar/' ~ item.src ~ '.svg') }}" alt="{{ item.nom }}" class="avatar" id="avatar-{{ item.id }}" onclick="change_avatar(this.id)">
+        {% endfor %}
+        </div>
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(registrationForm) }}
+
+
+{% block javascripts %}
+    <script>
+        function change_avatar(id) {
+            $('#avatar-form').val(id.replace('avatar-', ''));
+            $('.avatar').removeClass('avatar-selected');
+            $('#' + id).addClass('avatar-selected');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const countrySelectEl = document.getElementById('region-form');
+
+            countrySelectEl.addEventListener('change', function(e) {
+                const formEl = countrySelectEl.closest('form');
+
+                fetch(formEl.action, {
+                    method: formEl.method,
+                    body: new FormData(formEl)
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newCityFormFieldEl = doc.getElementById('ville-form');
+
+                    newCityFormFieldEl.addEventListener('change', function(e) {
+                        e.target.classList.remove('is-invalid');
+                    });
+
+                    document.getElementById('ville-form').replaceWith(newCityFormFieldEl);
+                })
+                .catch(function (err) {
+                    console.warn('Something went wrong.', err);
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% endblock %}
