@@ -35,9 +35,10 @@
                         <li><a href="">FAQ</a></li>
                         {% if app.user %}
                             <li><a href="/profil">Profil</a></li>
+                            <li><a href="/logout">Logout</a></li>
                             {% else %}
-                            <li><a href="">Login</a></li>
-                            <li><a href="">Register</a></li>
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Register</a></li>
                         {% endif %}
                         <li><a href="">Contact</a></li>
                     </ul>

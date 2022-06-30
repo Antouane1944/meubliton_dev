@@ -39,6 +39,20 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAnnoncebyFilter($prix_min, $prix_max)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.prix <= :prix_max AND p.prix >= :prix_min')
+            ->setParameter('prix_max', $prix_max)
+            ->setParameter('prix_min', $prix_min)
+            ->orderBy('p.prix', 'ASC');
+
+        // returns an array of Product objects
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
 //    /**
 //     * @return Annonce[] Returns an array of Annonce objects
 //     */

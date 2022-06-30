@@ -13,6 +13,13 @@
 {% block body %}
     <div style="max-width: 1200px">
         <h1>Liste des annonces</h1>
+        <div class="filters-container">
+        <h3>Filtres de recherche</h3>
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_row(form.prix_min, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
+            {{ form_row(form.prix_max, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
+        {{ form_end(form) }}
+        </div>
         <div class="align">
         {% for item in annonces %}
                 <div class="annonce-item">
@@ -46,4 +53,5 @@
         {% endfor %}
         </div>
     </div>
+
 {% endblock %}

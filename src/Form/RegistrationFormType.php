@@ -71,16 +71,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            //->add('avatar', ChoiceType::class, array(
-            //    'choices' => array(
-            //        $choicesData
-            //    ),
-            //    'multiple' => true,
-            //    'expanded' => true,
-            //    'choice_label' => function ($choice, $key, $value) {
-            //        return $choice;
-            //    },
-            //))
             
             ->add('avatar', EntityType::class, [
                 'class' => Avatar::class,
