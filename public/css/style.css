@@ -128,7 +128,6 @@ li {
     border: none;
     padding: 0.5rem;
     border-radius: 0.25rem;
-    margin-right: 1rem;
     transition: all 0.1s;
     text-align: center;
 }
@@ -152,4 +151,25 @@ li {
     margin-right: 1rem;
     margin-bottom: 1rem;
     border-radius: 1rem;
+}
+
+.tag-item {
+    color:#d9a732;
+    font-weight: bold;
+    border: solid 2px #d9a732;
+    padding: 4px;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.tag-selected {
+    background-color: #d9a732;
+    color: #fff;
+    border: solid 2px #d9a732;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.tag-item:hover {
+    cursor: pointer;
 }

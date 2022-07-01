@@ -18,11 +18,22 @@
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_row(form.prix_min, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
             {{ form_row(form.prix_max, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
+            <div style="margin: 16px 0;display:flex;">
+                {% for tag in tags %}
+                <div class="tag-item">
+                    <label><input name="check-{{ tag.id }}" type="checkbox" />{{ tag.nom }}</label>
+                </div>
+                {% endfor %}
+            </div>
         {{ form_end(form) }}
         </div>
         <div class="align">
         {% for item in annonces %}
-                <div class="annonce-item">
+            {% set test = false %}
+            {% for tag in item.tag1 %}
+                {% if (tag.id in array_selected_tags or array_selected_tags|length == 0) and test == false %}
+                {% set test = true %}
+                <div class="annonce-item" id="{{ item.id }}">
                     {% for image in item.images_ %}
                     <div class="annonce-images">
                             {% for key, value in image %}
@@ -50,8 +61,18 @@
                 <p class="description">{{ item.description }}</p>
                 <a class="btn">Voir l'annonce</a>
             </div>
+            {% endif %}
+        {% endfor %}
         {% endfor %}
         </div>
     </div>
+
+    {% block javascripts %}
+        <script>
+            //$(".tag-item").click(function(){
+            //    $(this).toggleClass("tag-selected");
+            //});
+        </script>
+    {% endblock %}
 
 {% endblock %}

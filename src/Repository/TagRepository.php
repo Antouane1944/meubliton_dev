@@ -39,6 +39,15 @@ class TagRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAnnonceByTag($tag)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT c FROM annonce_tag INNER JOIN annonce ON annonce_tag.annonce_id = annonce.id WHERE annonce_tag.tag_id = :tag'
+        );
+        $query->setParameter('tag', $tag);
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Tag[] Returns an array of Tag objects
 //     */

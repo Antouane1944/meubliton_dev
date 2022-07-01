@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AnnonceController extends AbstractController
 {
@@ -35,27 +36,38 @@ class AnnonceController extends AbstractController
         $form = $this->createFormBuilder()
                     ->add('prix_min', TextType::class, ['label' => 'Prix min'])
                     ->add('prix_max', TextType::class, ['label' => 'Prix max'])
-                     ->add('tags', EntityType::class, [
-                        'class' => Tag::class,
-                        'choice_label' => 'nom',
-                        'placeholder' => 'Choisir un tag'
-                    ])
                      ->add('Appliquer', SubmitType::class)
                      ->getForm();
         
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+                $array_tags = [];
+                $nb_tag = count($this->TagRepository->findAll());
+                for($i = 1; $i <= $nb_tag; $i++){
+                    if ($request->request->get('check-'.$i)){
+                        array_push($array_tags, $i);
+                    }
+                }
             $prix_min = $form->get('prix_min')->getData();
             $prix_max = $form->get('prix_max')->getData();
-            $annonces = $this->AnnonceRepository->getAnnoncebyFilter($prix_min, $prix_max);	
+            if ($prix_min == null){
+                $prix_min = 0;
+            }
+            if ($prix_max == null){
+                $prix_max = 100000;
+            }
+            $annonces = $this->AnnonceRepository->getAnnoncebyFilter($prix_min, $prix_max);
         } else {
             $annonces = $this->AnnonceRepository->findAll();
+            $array_tags = [];
         }
             
         return $this->render('annonces.html.twig', [
             'annonces' =>  $annonces,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tags' => $this->TagRepository->findAll(),
+            'array_selected_tags' => $array_tags
         ]);
     }
 

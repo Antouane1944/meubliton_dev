@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Annonce;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @extends ServiceEntityRepository<Annonce>
@@ -51,6 +52,15 @@ class AnnonceRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
 
         return $query->execute();
+    }
+
+    public function getAnnonceByTag($tag)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT c FROM annonce_tag INNER JOIN annonce ON annonce_tag.annonce_id = annonce.id WHERE annonce_tag.tag_id = :tag'
+        );
+        $query->setParameter('tag', $tag);
+        return $query->getResult();
     }
 
 //    /**
