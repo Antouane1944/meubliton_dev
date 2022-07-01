@@ -21,6 +21,9 @@ class Tag
     #[ORM\ManyToMany(targetEntity: Annonce::class, mappedBy: 'tag1')]
     private $annonces;
 
+    #[ORM\ManyToOne(targetEntity: TagCategory::class, inversedBy: 'tags')]
+    private $category;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -66,6 +69,18 @@ class Tag
         if ($this->annonces->removeElement($annonce)) {
             $annonce->removeTag1($this);
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?TagCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?TagCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

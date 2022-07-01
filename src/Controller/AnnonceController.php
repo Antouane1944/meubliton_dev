@@ -7,6 +7,7 @@ use App\Entity\Tag;
 use App\Entity\Task;
 use App\Repository\AnnonceRepository;
 use App\Repository\TagRepository;
+use App\Repository\TagCategoryRepository;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -28,15 +30,15 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 class AnnonceController extends AbstractController
 {
 
-    public function __construct(private AnnonceRepository $AnnonceRepository, private TagRepository $TagRepository){}
+    public function __construct(private AnnonceRepository $AnnonceRepository, private TagRepository $TagRepository, private TagCategoryRepository $TagCategoryRepository){}
 
     #[Route('/annonces', name: 'liste_annonces')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createFormBuilder()
-                    ->add('prix_min', TextType::class, ['label' => 'Prix min'])
-                    ->add('prix_max', TextType::class, ['label' => 'Prix max'])
-                     ->add('Appliquer', SubmitType::class)
+                    ->add('prix_min', IntegerType::class, ['label' => 'Prix min'])
+                    ->add('prix_max', IntegerType::class, ['label' => 'Prix max'])
+                     ->add('appliquer', SubmitType::class, ['label' => 'Appliquer les filtres'])
                      ->getForm();
         
         $form->handleRequest($request);
@@ -66,7 +68,7 @@ class AnnonceController extends AbstractController
         return $this->render('annonces.html.twig', [
             'annonces' =>  $annonces,
             'form' => $form->createView(),
-            'tags' => $this->TagRepository->findAll(),
+            'tag_category' => $this->TagCategoryRepository->findAll(),
             'array_selected_tags' => $array_tags
         ]);
     }

@@ -1,6 +1,9 @@
 body {
     font-family: 'Ubuntu', sans-serif;
+    margin:0;
 }
+
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
 
 .icone {
     width: 25px;
@@ -13,19 +16,28 @@ body {
 }
 
 header {
+    top:0;
+    left:0;
+    position: fixed;
     background-color: #403b2f;
     padding: 0.5rem;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    border-radius: 1rem;
+    width: 200px;
+    height: 100%;
+    margin-right: 2rem;
+    padding-top: 2rem;
+}
+
+.header-place {
+    padding: 0.5rem;
     width: 200px;
     margin-right: 2rem;
+    padding-top: 2rem;
 }
 
 .container {
-    max-width: 1500px;
     margin: 0 auto;
     display: flex;
-    margin-top: 1rem;
 }
 
 .header-logo {
@@ -132,6 +144,10 @@ li {
     text-align: center;
 }
 
+.btn:hover {
+    cursor: pointer;
+}
+
 .tag {
     background-color: #d9a732;
     color: #fff;
@@ -156,10 +172,8 @@ li {
 .tag-item {
     color:#d9a732;
     font-weight: bold;
-    border: solid 2px #d9a732;
     padding: 4px;
     border-radius: 8px;
-    margin-right: 16px;
 }
 
 .tag-selected {
@@ -172,4 +186,74 @@ li {
 
 .tag-item:hover {
     cursor: pointer;
+}
+
+.checkbox {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+input[type=number] {
+    padding:4px;
+    max-width: 70px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    border:none
+}
+
+input[type=number]:focus {
+    outline: none;
+}
+
+.form-number {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 150px;
+}
+
+.form-number > div {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.cat_titre {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.tag-cat > .align {
+    margin-top: 8px;
+}
+
+.align-cat {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 900px) {
+    header, .header-place {
+        display: none;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .align {
+        justify-content: center;
+    }
+    .tag-cat > .align {
+        justify-content: flex-start;
+    }
+
+    .annonce-item {
+        width: 100%;
+    }
 }

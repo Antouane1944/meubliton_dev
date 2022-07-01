@@ -11,20 +11,38 @@
 {% endblock %}
 
 {% block body %}
-    <div style="max-width: 1200px">
+    <div style="max-width: 1200px;width:80%">
         <h1>Liste des annonces</h1>
         <div class="filters-container">
         <h3>Filtres de recherche</h3>
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_row(form.prix_min, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
-            {{ form_row(form.prix_max, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")'}}) }}
-            <div style="margin: 16px 0;display:flex;">
-                {% for tag in tags %}
-                <div class="tag-item">
-                    <label><input name="check-{{ tag.id }}" type="checkbox" />{{ tag.nom }}</label>
-                </div>
-                {% endfor %}
+            <div class="form-number">
+                {{ form_row(form.prix_min, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")', 'placeholder': '0€'}}) }}
+                {{ form_row(form.prix_max, {'attr': {'oninput': '$("#prix_value").html(this.value+"€")', 'placeholder': '1000€'}}) }}
             </div>
+            <div class="align-cat">
+                {% for tag_cat in tag_category %}
+                    <div class="tag-cat">
+                        <a class="cat_titre">{{ tag_cat.nom }}</a>
+                        <div class="align">
+                        {% for tag in tag_cat.tags %}
+                             <div class="pretty p-switch p-fill checkbox">
+                             {% if tag.id in array_selected_tags %}
+                                <input name="check-{{ tag.id }}" type="checkbox" checked/>
+                                {% else %}
+                                <input name="check-{{ tag.id }}" type="checkbox"  />
+                             {% endif %}
+                                <div class="state p-warning">
+                                    <label>{{ tag.nom }}</label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+            {{ form_row(form.appliquer, {'attr': {'class': 'btn'}}) }}
         {{ form_end(form) }}
         </div>
         <div class="align">
