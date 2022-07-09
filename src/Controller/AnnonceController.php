@@ -68,7 +68,7 @@ class AnnonceController extends AbstractController
         return $this->render('annonces.html.twig', [
             'annonces' =>  $annonces,
             'form' => $form->createView(),
-            'tag_category' => $this->TagCategoryRepository->findAll(),
+            'tag_category' => $this->TagCategoryRepository->findBy([], ['cat_order' => 'DESC']),
             'array_selected_tags' => $array_tags
         ]);
     }
@@ -78,5 +78,12 @@ class AnnonceController extends AbstractController
         $resolver->setDefaults([
             'csrf_protection' => false,
         ]);
+    }
+
+    public function annonce(Request $request) { 
+        $annonce = $this->AnnonceRepository->find($request->get('id'));
+        return $this->render('annonce.html.twig', [
+            'annonce' => $annonce,
+            'annonces_auteur' => $this->AnnonceRepository->findBy(['vendeur' => $annonce->getVendeur()], ['id' => 'DESC'], 3)]);
     }
 }

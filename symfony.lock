@@ -35,6 +35,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "pugx/autocompleter-bundle": {
+        "version": "v1.9.0"
+    },
     "symfony/console": {
         "version": "6.1",
         "recipe": {

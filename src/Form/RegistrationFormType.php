@@ -3,15 +3,14 @@
 namespace App\Form;
 use App\StaticClass;
 use App\Entity\User;
-use App\Entity\Ville;
-use App\Entity\Region;
 use App\Entity\Avatar;
-use App\Repository\VilleRepository;
-use App\Repository\RegionRepository;
+use App\Entity\Villes;
 use App\Repository\AvatarRepository;
+use App\Repository\VillesRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +30,7 @@ use Symfony\Component\Form\FormInterface;
 class RegistrationFormType extends AbstractType
 {
 
-    public function __construct(private VilleRepository $VilleRepository, private AvatarRepository $AvatarRepository){}
+    public function __construct(private AvatarRepository $AvatarRepository){}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -77,40 +76,38 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => 'nom',
                 'placeholder' => 'Choisir un Avatar'
             ])
-            ->add('region', EntityType::class, [
-                'class' => Region::class,
-                'choice_label' => 'nom',
-                'placeholder' => 'Choisir une région'
+            ->add('ville_id', HiddenType::class, [
+                'required'   => true
             ]);
 
-            $formModifier = function (FormInterface $form, Region $region = null) {
-                $villes = $region === null ? [] : $this->VilleRepository->findBy(['region' => $region]);
-                $form->add('ville', EntityType::class, [
-                    'class' => Ville::class,
-                    'choice_label' => 'nom',
-                    'placeholder' => 'Choisir une ville',
-                    'disabled' => $region === null,
-                    'choices' => $villes
-                ]);
-            };
+            //$formModifier = function (FormInterface $form, Region $region = null) {
+            //    $villes = $region === null ? [] : $this->VilleRepository->findBy(['region' => $region]);
+            //    $form->add('ville', EntityType::class, [
+            //        'class' => Ville::class,
+            //        'choice_label' => 'nom',
+            //        'placeholder' => 'Choisir une ville',
+            //        'disabled' => $region === null,
+            //        'choices' => $villes
+            //    ]);
+            //};
     
-            $builder->addEventListener(
-                FormEvents::PRE_SET_DATA,
-                function (FormEvent $event) use ($formModifier) {
-                    $data = $event->getData();
-    
-                    $formModifier($event->getForm(), $data->getRegion());
-                }
-            );
-    
-            $builder->get('region')->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($formModifier) {
-                    $region = $event->getForm()->getData();
-    
-                    $formModifier($event->getForm()->getParent(), $region);
-                }
-            );
+            //$builder->addEventListener(
+            //    FormEvents::PRE_SET_DATA,
+            //    function (FormEvent $event) use ($formModifier) {
+            //        $data = $event->getData();
+    //
+            //        $formModifier($event->getForm(), $data->getRegion());
+            //    }
+            //);
+    //
+            //$builder->get('region')->addEventListener(
+            //    FormEvents::POST_SUBMIT,
+            //    function (FormEvent $event) use ($formModifier) {
+            //        $region = $event->getForm()->getData();
+    //
+            //        $formModifier($event->getForm()->getParent(), $region);
+            //    }
+            //);
             
     }
 

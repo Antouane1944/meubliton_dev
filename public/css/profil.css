@@ -22,3 +22,38 @@ p {
     flex-direction: column;
     align-items: center;
 }
+
+.container {
+    margin-top: 1rem;
+}
+
+.profil {
+    display: flex;
+    flex-direction: column;
+    max-width: 1500px;
+    width: 80%;
+}
+
+.align {
+    margin-top: 1rem;
+}
+
+.center {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.center > .btn {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.danger {
+    background-color: #E72222;
+}
+
+.blue {
+    background-color: #2296E7;
+}

@@ -14,14 +14,60 @@
 {% block body %}
 
     {% if app.user %}
+    <div class="profil">
+        <h1>Mon Profil</h1>
         <div>
             <div class="block user-info">
                 <img src="{{ asset('/img/avatar/' ~ app.user.avatar.src ~ '.svg') }}" alt="{{ app.user.userIdentifier }}" class="img-thumbnail">
                 <h2>{{ app.user.pseudo }}</h2>
                 <p>📧 {{ app.user.email }}</p>
-                <p class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" >{{ app.user.ville.nom }}, {{ app.user.region.nom }}</p>
+                <p class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" ><span id="ville_name"></span></p>
             </div>
         </div>
+        <h1>Mes annonces</h1>
+        <div class="align">
+        {% for item in annonces %}
+                <div class="annonce-item" id="{{ item.id }}">
+                    {% for image in item.images_ %}
+                    <div class="annonce-images">
+                            {% for key, value in image %}
+                                {% if key == "image1" %}
+                                    <div class="image-principale" style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                                {% endif %}
+                            {% endfor %}
+                        <div class="images-secondaires">
+                            {% for key, value in image %}
+                                {% if key != "image1" %}
+                                    <div style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <h2>{{ item.titre }}</h2>
+                    <div class="align center">
+                    <a class="btn">Voir l'annonce</a>
+                    <a class="btn blue">Editer</a>
+                    <a class="btn danger">Supprimer</a>
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+    </div>
     {% endif %}
-
+    {% block javascripts %}
+        <script>
+            function init_villes(input, id) {
+                $('#'+id).html('chargement ...');
+                $.getJSON( "../ressources/france.json", function( data ) {
+                    $.each( data, function( key, val ) {
+                        if (val['Code_commune_INSEE'] == input) {
+                            $('#'+id).html(val['Nom_commune']);
+                        }
+                    });
+                });
+            }
+            init_villes('{{ app.user.ville_id }}', 'ville_name');
+        </script>
+    {% endblock %}
 {% endblock %}

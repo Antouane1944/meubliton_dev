@@ -13,11 +13,15 @@
 
 {% block body %}
     {{ form_start(registrationForm) }}
-    <h1>Register</h1>
+    <h1>Rejoindre la MeubliTeam !</h1>
         {{ form_row(registrationForm.pseudo) }}
         {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.region, {'id':'region-form'}) }}
-        {{ form_row(registrationForm.ville, {'id':'ville-form'}) }}
+        {{ form_row(registrationForm.ville_id) }}
+        <div>
+        <label for="ville_id">Ville</label>
+        <input type="text" id="input_ville_name" />
+            <select name="ville_id" id="result"></select>
+        </div>
         {{ form_row(registrationForm.avatar, {'id':'avatar-form'}) }}
         <div class="align">
         {% for item in avatars %}
@@ -40,33 +44,38 @@
             $('.avatar').removeClass('avatar-selected');
             $('#' + id).addClass('avatar-selected');
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            const countrySelectEl = document.getElementById('region-form');
 
-            countrySelectEl.addEventListener('change', function(e) {
-                const formEl = countrySelectEl.closest('form');
+        $('#input_ville_name').keyup(function () {
+            if ($('#input_ville_name').val() == '') {
+                $('#result').css('display', 'none');
+            } else {
+                $('#result').css('display', 'block');
+                searchbar($('#input_ville_name').val());
+            }
+        })
 
-                fetch(formEl.action, {
-                    method: formEl.method,
-                    body: new FormData(formEl)
-                })
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newCityFormFieldEl = doc.getElementById('ville-form');
+        $('#result').on('change', function () {
+            $('#registration_form_ville_id').val($('#result').val());
+            $('#input_ville_name').val($('#result option:selected').text());
+            $('#result').css('display', 'none');
+        })
 
-                    newCityFormFieldEl.addEventListener('change', function(e) {
-                        e.target.classList.remove('is-invalid');
-                    });
-
-                    document.getElementById('ville-form').replaceWith(newCityFormFieldEl);
-                })
-                .catch(function (err) {
-                    console.warn('Something went wrong.', err);
-                });
+        function searchbar(input) {
+            $.getJSON( "ressources/france.json", function( data ) {
+            var suggestions = [];
+            var i = 0;
+            suggestions.push( "<option>Choisissez votre ville</option>" );
+            $.each( data, function( key, val ) {
+                if (i <= 9 && val['Nom_commune'].toLowerCase().indexOf(input.toLowerCase()) != -1) {
+                    suggestions.push( "<option value='" + val['Code_commune_INSEE'] + "'>" + val['Nom_commune'] + ' (' + val['Code_commune_INSEE'] + ")</option>" );
+                    i++;
+                } else {
+                    return;
+                }
             });
-        });
+            $('#result').html(suggestions.join( "" ));
+            });
+        }
     </script>
 {% endblock %}
 

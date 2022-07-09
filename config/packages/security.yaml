@@ -15,7 +15,7 @@ security:
             security: false
         main: 
             form_login:
-                default_target_path: /profil
+                default_target_path: app_login
                 use_referer: true
             lazy: true
             provider: app_user_provider
@@ -23,7 +23,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: home
+                target: app_login
             entry_point: form_login
 
             # activate different ways to authenticate

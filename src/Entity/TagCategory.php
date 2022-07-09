@@ -21,6 +21,9 @@ class TagCategory
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Tag::class)]
     private $tags;
 
+    #[ORM\Column(type: 'integer')]
+    private $cat_order;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -69,6 +72,18 @@ class TagCategory
                 $tag->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCatOrder(): ?int
+    {
+        return $this->cat_order;
+    }
+
+    public function setCatOrder(int $cat_order): self
+    {
+        $this->cat_order = $cat_order;
 
         return $this;
     }

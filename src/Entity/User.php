@@ -23,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 30)]
     private $pseudo;
 
+    #[ORM\Column(type: 'integer')]
+    private $ville_id;
+
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
@@ -42,15 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'date')]
     private $date_inscription;
 
-    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'users')]
-    private $ville;
-
     #[ORM\OneToMany(mappedBy: 'vendeur', targetEntity: Annonce::class)]
     private $annonces;
-
-    #[ORM\ManyToOne(targetEntity: Region::class, inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $region;
 
     public function __construct()
     {
@@ -151,6 +147,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getVilleId(): ?int
+    {
+        return $this->ville_id;
+    }
+
+    public function setVilleId(int $ville_id): self
+    {
+        $this->ville_id = $ville_id;
+
+        return $this;
+    }
+
+    public function getville_id(): ?int
+    {
+        return $this->ville_id;
+    }
+
+    public function setville_id(int $ville_id): self
+    {
+        $this->ville_id = $ville_id;
+
+        return $this;
+    }
+
     public function isAdmin(): ?bool
     {
         return $this->admin;
@@ -171,18 +191,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateInscription(\DateTimeInterface $date_inscription): self
     {
         $this->date_inscription = $date_inscription;
-
-        return $this;
-    }
-
-    public function getVille(): ?Ville
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?Ville $ville): self
-    {
-        $this->ville = $ville;
 
         return $this;
     }
@@ -213,18 +221,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $annonce->setVendeur(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getRegion(): ?Region
-    {
-        return $this->region;
-    }
-
-    public function setRegion(?Region $region): self
-    {
-        $this->region = $region;
 
         return $this;
     }

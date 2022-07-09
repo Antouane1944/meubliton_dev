@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block head %}
+{{ parent() }}
+    {% block stylesheets %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+
+<div class="annonce-container">
+    <div class="main-annonce">
+        <h1>{{ annonce.titre }}</h1>
+        {% for image in annonce.images_ %}
+            <div class="splide">
+                <div class="splide__track">
+                        <ul class="splide__list">
+                            {% for key, value in image %}
+                                <img class="full-image splide__slide" src="/img/annonces/{{ value.src }}.png"/>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="tags">
+            {% for tag in annonce.tag1 %}
+                <a class="tag">{{ tag.nom }}</a>
+            {% endfor %}
+        </div>
+        <a class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" ><span id="annonce-ville"></span></a>   
+        <a class="text-icone"><img class="icone" src="{{ asset('img/icones/user.png') }}" >Vendeur : {{ annonce.vendeur.pseudo }}</a> 
+        <p>{{ annonce.description }}</p>
+        <a class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" ><h2>où se trouve cette annonce ?</h2></a>
+        <div id="map">
+
+        </div>
+    </div>
+    <div style="margin-left:1rem;background:white;padding:1rem;border-radius:1rem">
+        <h1>{{ annonce.vendeur.pseudo }} vend aussi ...</h1>
+        <div>
+        {% set ville = 1 %}
+        {% for item in annonces_auteur %}
+            <div class="annonce-item" id="{{ item.id }}">
+                {% for image in item.images_ %}
+                    <div class="annonce-images">
+                        {% for key, value in image %}
+                            {% if key == "image1" %}
+                                <div class="image-principale" style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="images-secondaires">
+                            {% for key, value in image %}
+                                {% if key != "image1" %}
+                                    <div style="background: url('/img/annonces/{{ value.src }}.png');background-size:cover;" /></div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <h2>{{ item.titre }}</h2>
+                <div class="tags">
+                    {% for tag in item.tag1 %}
+                        <a class="tag">{{ tag.nom }}</a>
+                    {% endfor %}
+                </div>
+                <a class="text-icone" ><img class="icone" src="{{ asset('img/icones/location.svg') }}" ><span id="ville-{{ ville }}"></span></a>
+                <p class="description">{{ item.description }}</p>
+                <a class="btn" href="/annonce/{{ item.id }}">Voir l'annonce</a>
+            </div>
+            <script>
+                $( document ).ready(function() {
+                    init_villes({{ item.ville_id}}, 'ville-{{ ville }}');
+                });
+            </script>
+            {% set ville = ville + 1 %}
+        {% endfor %}
+    </div>
+</div>
+<script>
+    // SLIDER
+    new Splide( '.splide' ).mount();
+
+    // MAP
+
+    function load_map(long, lat) {
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWZvcmdleiIsImEiOiJja3JtazRpOXMwY2hmMm9ycXozbWR6ODk5In0.DLWUaa4OlcEfE2pDOLAJsA';
+        const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [long, lat], // starting position [lng, lat]
+        zoom: 10, // starting zoom
+        projection: 'globe' // display the map as a 3D globe
+        });
+        map.on('style.load', () => {
+        map.setFog({}); // Set the default atmosphere style
+        });
+    };
+
+
+    // VILLES
+    init_villes({{ annonce.ville_id }}, 'annonce-ville'); // chargement de la ville principale
+
+    function init_villes(input, id) {
+        $('#'+id).html('chargement ...');
+        $.getJSON( "../ressources/france.json", function( data ) {
+            $.each( data, function( key, val ) {
+                if (val['Code_commune_INSEE'] == input) {
+                     $('#'+id).html(val['Nom_commune']);
+                    if (id == 'annonce-ville') {
+                        var coordonnes = val['coordonnees_gps'];
+                        var long = coordonnes.split(',')[1];
+                        var lat = coordonnes.split(',')[0];
+                        load_map(long, lat);
+                    }
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}

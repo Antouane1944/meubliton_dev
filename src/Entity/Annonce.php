@@ -24,17 +24,12 @@ class Annonce
     #[ORM\Column(type: 'integer')]
     private $prix;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'annonces')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $categorie;
+    #[ORM\Column(type: 'integer')]
+    private $ville_id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private $vendeur;
-
-    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'annonces')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $ville;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private $images_ = [];
@@ -88,14 +83,14 @@ class Annonce
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getville_id(): ?int
     {
-        return $this->categorie;
+        return $this->ville_id;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setville_id(int $ville_id): self
     {
-        $this->categorie = $categorie;
+        $this->ville_id = $ville_id;
 
         return $this;
     }
@@ -108,18 +103,6 @@ class Annonce
     public function setVendeur(?User $vendeur): self
     {
         $this->vendeur = $vendeur;
-
-        return $this;
-    }
-
-    public function getVille(): ?Ville
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?Ville $ville): self
-    {
-        $this->ville = $ville;
 
         return $this;
     }

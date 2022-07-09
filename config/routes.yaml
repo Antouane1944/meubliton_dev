@@ -3,9 +3,13 @@ controllers:
     type: attribute
 
 home:
-    path: /
+    path: /home
     controller: \App\Controller\HomeController::index
 
 profil:
     path: /profil
     controller: \App\Controller\UserController::index
+
+annonce:
+    path: /annonce/{id}
+    controller: \App\Controller\AnnonceController::annonce

@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block body %}
-    <div style="max-width: 1200px;width:80%">
-        <h1>Liste des annonces</h1>
+    <div style="max-width: 2000px;width:80%">
+        <div class="banner" style="background: url('{{ asset('img/bannieres/annonces.jpg') }}'); background-size:cover;background-position: center;"><h1>Liste des annonces</h1></div>
         <div class="filters-container">
         <h3>Filtres de recherche</h3>
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -74,10 +74,9 @@
                     <a class="tag">{{ tag.nom }}</a>
                 {% endfor %}
                 </div>
-                <a class="text-icone"><img class="icone" src="{{ asset('img/icones/location.svg') }}" >{{ item.ville.nom }}, {{ item.ville.region.nom }}</a>
                 <a class="text-icone"><img class="icone" src="{{ asset('img/icones/user.png') }}" >Vendeur : {{ item.vendeur.pseudo }}</a>
                 <p class="description">{{ item.description }}</p>
-                <a class="btn">Voir l'annonce</a>
+                <a class="btn" href="/annonce/{{ item.id }}">Voir l'annonce</a>
             </div>
             {% endif %}
         {% endfor %}

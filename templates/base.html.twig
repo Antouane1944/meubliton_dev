@@ -9,15 +9,19 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet">
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide-core.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/themes/splide-skyblue.min.css">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             <link href="{{ asset('/css/style.css') }}" rel="stylesheet" />
+            <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
         {% endblock %}
     </head>
     <body>
@@ -32,16 +36,17 @@
                 </div>
                 <div class="header-menu">
                     <ul>
-                        <li><a href="">Home</a></li>
+                        <li><a href="/home">Home</a></li>
                         <li><a href="/annonces">Annonces</a></li>
-                        <li><a href="">FAQ</a></li>
                         {% if app.user %}
+                            <li><a href="/ajouter-annonce">Ajouter une annonce</a></li>
                             <li><a href="/profil">Profil</a></li>
                             <li><a href="/logout">Logout</a></li>
                             {% else %}
                             <li><a href="/login">Login</a></li>
                             <li><a href="/register">Register</a></li>
                         {% endif %}
+                        <li><a href="">FAQ</a></li>
                         <li><a href="">Contact</a></li>
                     </ul>
                 </div>
